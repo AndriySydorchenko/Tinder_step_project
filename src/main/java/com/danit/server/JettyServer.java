@@ -1,9 +1,12 @@
 package com.danit.server;
 
 import com.danit.controllers.HelloServlet;
+import com.danit.controllers.LoginServlet;
+import com.danit.controllers.WrongLogPassServlet;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 
 public class JettyServer {
@@ -14,6 +17,8 @@ public class JettyServer {
         server.setConnectors(new Connector[]{connector});
         ServletHandler handler = new ServletHandler();
         handler.addServletWithMapping(HelloServlet.class, "/hello");
+        handler.addServletWithMapping(LoginServlet.class, "/login");
+        handler.addServletWithMapping(WrongLogPassServlet.class, "/wrongLogPass");
         server.setHandler(handler);
         server.start();
     }
