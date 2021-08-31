@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class LoginServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Configuration configuration = new Configuration(new Version("2.3.31"));
         configuration.setClassForTemplateLoading(LoginServlet.class, "/");
         configuration.setDefaultEncoding("UTF-8");

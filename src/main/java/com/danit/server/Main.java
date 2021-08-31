@@ -1,6 +1,5 @@
 package com.danit.server;
 
-
 import freemarker.template.Configuration;
 import freemarker.template.Version;
 
