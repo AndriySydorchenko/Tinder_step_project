@@ -20,7 +20,7 @@ public class JettyServer {
         handler.addServletWithMapping(HelloServlet.class, "/hello");
         handler.addServletWithMapping(LoginServlet.class, "/login");
         handler.addServletWithMapping(WrongLogPassServlet.class, "/wrongLogPass");
-        handler.addServletWithMapping(UsersServlet.class, "/liked");
+        handler.addServletWithMapping(UsersServlet.class, "/users");
         server.setHandler(handler);
         server.start();
     }

@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet {
         Configuration configuration = new Configuration(new Version("2.3.31"));
         configuration.setClassForTemplateLoading(LoginServlet.class, "/");
         configuration.setDefaultEncoding("UTF-8");
-        Template template = configuration.getTemplate("peopleList.ftl");
+        Template template = configuration.getTemplate("likePage.ftl");
         try {
             template.process(null, resp.getWriter());
         } catch (TemplateException e) {
