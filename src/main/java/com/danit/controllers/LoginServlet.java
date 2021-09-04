@@ -1,21 +1,18 @@
 package com.danit.controllers;
-
-import com.danit.server.Main;
+import com.danit.service.UserService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
-
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 public class LoginServlet extends HttpServlet {
+
+    UserService userService = new UserService();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -28,20 +25,17 @@ public class LoginServlet extends HttpServlet {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HashMap<String, String> accounts = new HashMap<>();
-        accounts.put("test@mail.com", "test");
-        accounts.put("tinder@mail.com", "tinder");
 
         String inputEmail = req.getParameter("inputEmail");
         String inputPassword = req.getParameter("inputPassword");
 
-        if(accounts.containsKey(inputEmail) && accounts.get(inputEmail).equals(inputPassword)) {
-           resp.sendRedirect("/hello");
+        if (userService.isUserExist(inputEmail, inputPassword)) {
+            System.out.println(userService.getCurrentUser());
+            resp.sendRedirect("/users");
         } else {
             resp.sendRedirect("/wrongLogPass");
         }
