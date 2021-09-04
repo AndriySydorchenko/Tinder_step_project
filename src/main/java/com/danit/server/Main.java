@@ -2,6 +2,7 @@ package com.danit.server;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        new JettyServer().start();
+        JettyServer jettyServer = new JettyServer();
+        jettyServer.start();
     }
 }
