@@ -3,6 +3,7 @@ import com.danit.controllers.*;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 
 import javax.servlet.DispatcherType;
@@ -13,14 +14,18 @@ public class JettyServer {
     public void start() throws Exception {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(8080);
-
         server.setConnectors(new Connector[]{connector});
-        ServletHandler handler = new ServletHandler();
-        handler.addServletWithMapping(LoginServlet.class, "/login");
-        handler.addServletWithMapping(WrongLogPassServlet.class, "/wrongLogPass");
-        handler.addServletWithMapping(UsersServlet.class, "/users");
+        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
 
-        handler.addFilterWithMapping(AuthFilter.class, "/*", EnumSet.of(DispatcherType.REQUEST));
+        handler.addServlet(StartPageServlet.class, "/");
+        handler.addServlet(LoginServlet.class, "/login");
+        handler.addServlet(WrongLogPassServlet.class, "/wrongLogPass");
+        handler.addServlet(UsersServlet.class, "/users");
+
+        handler.addFilter(AuthFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
+        handler.addFilter(AuthFilter.class, "/users", EnumSet.of(DispatcherType.REQUEST));
+        handler.addFilter(AuthFilter.class, "/liked", EnumSet.of(DispatcherType.REQUEST));
+
         server.setHandler(handler);
         server.start();
     }

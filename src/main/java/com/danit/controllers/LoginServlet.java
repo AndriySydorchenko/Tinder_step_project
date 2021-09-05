@@ -34,7 +34,7 @@ public class LoginServlet extends HttpServlet {
         String inputPassword = req.getParameter("inputPassword");
 
         if (userService.isUserExist(inputEmail, inputPassword)) {
-            System.out.println(userService.getCurrentUser());
+            req.getSession().setAttribute("currentUser", userService.getCurrentUser());
             resp.sendRedirect("/users");
         } else {
             resp.sendRedirect("/wrongLogPass");
