@@ -38,6 +38,7 @@ public class UsersServlet extends HttpServlet {
         } catch (SQLException | TemplateException e) {
             e.printStackTrace();
         }
+//        System.out.println(req.getSession().getAttribute("currentUser"));
     }
 
     @Override
