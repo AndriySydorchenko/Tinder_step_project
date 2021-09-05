@@ -24,7 +24,6 @@ public class UsersServlet extends HttpServlet {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-
 //        System.out.println(req.getSession().getAttribute("currentUser"));
     }
 }
