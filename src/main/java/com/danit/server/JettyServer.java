@@ -16,11 +16,14 @@ public class JettyServer {
         ServerConnector connector = new ServerConnector(server);
         connector.setPort(8080);
         server.setConnectors(new Connector[]{connector});
-        ServletHandler handler = new ServletHandler();
-        handler.addServletWithMapping(HelloServlet.class, "/hello");
-        handler.addServletWithMapping(LoginServlet.class, "/login");
-        handler.addServletWithMapping(WrongLogPassServlet.class, "/wrongLogPass");
-        handler.addServletWithMapping(UsersServlet.class, "/users");
+//        ServletHandler handler = new ServletHandler();
+        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
+//        handler.addServletWithMapping(HelloServlet.class, "/hello");
+//        handler.addServletWithMapping(LoginServlet.class, "/login");
+//        handler.addServletWithMapping(WrongLogPassServlet.class, "/wrongLogPass");
+//        handler.addServletWithMapping(UsersServlet.class, "/users");
+        handler.addServlet(UsersServlet.class, "/users");
+
         server.setHandler(handler);
         server.start();
     }
