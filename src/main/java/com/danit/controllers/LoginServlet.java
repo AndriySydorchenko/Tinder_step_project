@@ -5,6 +5,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,12 +30,22 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String inputEmail = req.getParameter("inputEmail");
         String inputPassword = req.getParameter("inputPassword");
 
         if (userService.isUserExist(inputEmail, inputPassword)) {
             req.getSession().setAttribute("currentUser", userService.getCurrentUser());
+
+            String cookieKey = Long.toString(System.currentTimeMillis());
+            String userEmail = userService.getCurrentUser().getEmail();
+
+            Cookie loginCookie = new Cookie("login", userEmail);
+            Cookie keyCookie = new Cookie("key", cookieKey);
+
+            userService.setCookieKey(userEmail, cookieKey);
+
+            resp.addCookie(loginCookie);
+            resp.addCookie(keyCookie);
             resp.sendRedirect("/users");
         } else {
             resp.sendRedirect("/wrongLogPass");

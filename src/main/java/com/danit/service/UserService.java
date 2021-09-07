@@ -4,7 +4,7 @@ import com.danit.dao.UsersDao;
 import com.danit.model.User;
 
 public class UserService {
-    UsersDao usersDao;
+    private UsersDao usersDao;
 
     public UserService() {
         usersDao = new UsersDao();
@@ -16,5 +16,13 @@ public class UserService {
 
     public User getCurrentUser() {
         return usersDao.getCurrentUser();
+    }
+
+    public boolean isValidCookieKey(String userEmail, String key) {
+        return usersDao.isValidCookieKey(userEmail, key);
+    }
+
+    public void setCookieKey(String userEmail, String key) {
+        usersDao.setUserCookieKey(userEmail, key);
     }
 }
