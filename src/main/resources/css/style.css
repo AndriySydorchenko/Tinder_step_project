@@ -1,4 +1,4 @@
-
+<style type="text/css">
 html,
 body {
   height: 100%;
@@ -367,4 +367,5 @@ input:focus{
 .msg-box input:focus{
   outline: none;
 }
+</style>
 
