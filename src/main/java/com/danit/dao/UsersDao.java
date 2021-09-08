@@ -65,6 +65,7 @@ public class UsersDao {
             PreparedStatement ps = connection.prepareStatement(SET_COOKIE_KEY_QUERY);
             ps.setString(1, key);
             ps.setString(2, userEmail);
+
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
