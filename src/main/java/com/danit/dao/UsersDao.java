@@ -12,9 +12,8 @@ public class UsersDao {
     List users = new ArrayList<User>();
     final private String USERNAME = "admin";
     final private String USERPASS = "admin123";
-    final private String QUERY = "SELECT id, name, surname, email, photo, profession FROM user_account WHERE email = ? AND password = ?";
     final private String QUERY_GET_USERS = "SELECT * FROM user_account WHERE id != ?";
-    final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo FROM user_account WHERE email=? AND password=?";
+    final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo, profession FROM user_account WHERE email=? AND password=?";
     final private String GET_COOKIE_KEY_QUERY = "SELECT cookie_key FROM user_account WHERE email=? AND cookie_key = ?";
     final private String SET_COOKIE_KEY_QUERY = "UPDATE user_account SET cookie_key=? WHERE email=?";
 
