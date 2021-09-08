@@ -65,10 +65,7 @@ public class UsersDao {
             PreparedStatement ps = connection.prepareStatement(SET_COOKIE_KEY_QUERY);
             ps.setString(1, key);
             ps.setString(2, userEmail);
-            int result = ps.executeUpdate();
-            if (result == 1) {
-                System.out.println("successful cookie set");
-            }
+            ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
