@@ -4,13 +4,17 @@ package com.danit.dao;
 import com.danit.model.User;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsersDao {
     User currentUser;
+    List users = new ArrayList<User>();
     final private String USERNAME = "admin";
     final private String USERPASS = "admin123";
-    final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo FROM user_account WHERE email=? AND password=?";
-    final private String GET_COOKIE_KEY_QUERY = "SELECT cookie_key FROM user_account WHERE email=? AND cookie_key = ?";
+    final private String QUERY_GET_USERS = "SELECT * FROM user_account WHERE id != ?";
+    final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo, profession FROM user_account WHERE email=? AND password=?";
+    final private String GET_COOKIE_KEY_QUERY = "SELECT * FROM user_account WHERE email=? AND cookie_key = ?";
     final private String SET_COOKIE_KEY_QUERY = "UPDATE user_account SET cookie_key=? WHERE email=?";
 
     private Connection connection;
@@ -35,7 +39,8 @@ public class UsersDao {
                 String surname = rs.getString("surname");
                 String email = rs.getString("email");
                 String photo = rs.getString("photo");
-                currentUser = new User(id, name, surname, email, photo);
+                String profession = rs.getString("profession");
+                currentUser = new User(id, name, surname, email, photo, profession);
                 isUserExist = true;
             }
         } catch (SQLException e) {
@@ -53,6 +58,13 @@ public class UsersDao {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 isValidCookieKey = true;
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                String email = rs.getString("email");
+                String photo = rs.getString("photo");
+                String profession = rs.getString("profession");
+                currentUser = new User(id, name, surname, email, photo, profession);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,4 +88,29 @@ public class UsersDao {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public List<User> getUsers(User currentUser){
+        try {
+            PreparedStatement statement = connection.prepareStatement(QUERY_GET_USERS);
+            statement.setInt(1, currentUser.getId());
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()){
+                int id = Integer.parseInt(resultSet.getString("id"));
+                String name = resultSet.getString("name");
+                String surname = resultSet.getString("surname");
+                String email = resultSet.getString("email");
+                String photo = resultSet.getString("photo");
+                String profession = resultSet.getString("profession");
+                users.add(new User(id, name, surname, email, photo, profession));
+            }
+            connection.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+
 }
