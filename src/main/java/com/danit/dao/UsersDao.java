@@ -14,7 +14,7 @@ public class UsersDao {
     final private String USERPASS = "admin123";
     final private String QUERY_GET_USERS = "SELECT * FROM user_account WHERE id != ?";
     final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo, profession FROM user_account WHERE email=? AND password=?";
-    final private String GET_COOKIE_KEY_QUERY = "SELECT cookie_key FROM user_account WHERE email=? AND cookie_key = ?";
+    final private String GET_COOKIE_KEY_QUERY = "SELECT * FROM user_account WHERE email=? AND cookie_key = ?";
     final private String SET_COOKIE_KEY_QUERY = "UPDATE user_account SET cookie_key=? WHERE email=?";
 
     private Connection connection;
@@ -58,6 +58,13 @@ public class UsersDao {
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
                 isValidCookieKey = true;
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String surname = rs.getString("surname");
+                String email = rs.getString("email");
+                String photo = rs.getString("photo");
+                String profession = rs.getString("profession");
+                currentUser = new User(id, name, surname, email, photo, profession);
             }
         } catch (SQLException e) {
             e.printStackTrace();

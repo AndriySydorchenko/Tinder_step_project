@@ -3,6 +3,7 @@ package com.danit.controllers;
 import com.danit.dao.GradeDao;
 import com.danit.dao.UsersDao;
 import com.danit.model.User;
+import com.danit.service.GradeService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -28,7 +29,7 @@ public class LikedServlet extends HttpServlet {
         configuration.setDefaultEncoding("UTF-8");
         Template template = configuration.getTemplate("peopleList.ftl");
         try {
-            List<User> likedUser = new GradeDao().getLikedUser((User) currentUser);
+            List<User> likedUser = new GradeService().getLikedUsers((User) currentUser);
             Map<String, Object> values = Map.of("users", likedUser);
             template.process(values, resp.getWriter());
         } catch (TemplateException e) {
@@ -40,7 +41,6 @@ public class LikedServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Object currentUser = session.getAttribute("currentUser");
-        System.out.println(req.getParameter("id"));
         resp.sendRedirect("/messages/"+ req.getParameter("id"));
     }
 }

@@ -38,7 +38,8 @@ public class AuthFilter implements Filter {
                 }
                 if (userEmail != "" && cookie_key != "") {
                     if (userService.isValidCookieKey(userEmail, cookie_key)) {
-                       chain.doFilter(request, response);
+                        ((HttpServletRequest) request).getSession().setAttribute("currentUser", userService.getCurrentUser());
+                        chain.doFilter(request, response);
                     } else {
                         httpServletResponse.sendRedirect("/login");
                     };

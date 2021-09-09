@@ -3,6 +3,8 @@ package com.danit.controllers;
 import com.danit.dao.GradeDao;
 import com.danit.dao.UsersDao;
 import com.danit.model.User;
+import com.danit.service.GradeService;
+import com.danit.service.UserService;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -33,7 +35,7 @@ public class UsersServlet extends HttpServlet {
         Template template = configuration.getTemplate("likePage.ftl");
         try {
             if( users.size() == 0){
-                users = new UsersDao().getUsers((User) currentUser);
+                users = new UserService().getUsers((User) currentUser);
             }
             template.process(users.get(indexUser), resp.getWriter());
         } catch (TemplateException e) {
@@ -48,11 +50,11 @@ public class UsersServlet extends HttpServlet {
         req.setCharacterEncoding("UTF-8");
         String action = req.getParameter("action");
         String path = "/users";
-        GradeDao gradeDao = new GradeDao();
+        GradeService gradeService = new GradeService();
         if(action.equals("like")) {
-            gradeDao.insertGrade((User) currentUser, users.get(indexUser), "like");
+            gradeService.insertGrade((User) currentUser, users.get(indexUser), "like");
         } else if(action.equals("dislike")){
-            gradeDao.insertGrade((User) currentUser, users.get(indexUser), "dislike");
+            gradeService.insertGrade((User) currentUser, users.get(indexUser), "dislike");
         }
         if (indexUser  == users.size() - 1){
             indexUser = 0;

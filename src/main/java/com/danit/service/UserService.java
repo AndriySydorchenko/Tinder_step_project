@@ -3,6 +3,8 @@ package com.danit.service;
 import com.danit.dao.UsersDao;
 import com.danit.model.User;
 
+import java.util.List;
+
 public class UserService {
     private UsersDao usersDao;
 
@@ -24,5 +26,9 @@ public class UserService {
 
     public void setCookieKey(String userEmail, String key) {
         usersDao.setUserCookieKey(userEmail, key);
+    }
+
+    public List<User> getUsers(User currentUser){
+        return usersDao.getUsers(currentUser);
     }
 }
