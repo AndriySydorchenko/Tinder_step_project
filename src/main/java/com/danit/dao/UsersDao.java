@@ -1,6 +1,5 @@
 package com.danit.dao;
 
-
 import com.danit.model.User;
 
 import java.sql.*;
@@ -16,19 +15,11 @@ public class UsersDao {
     final private String GET_USER_QUERY = "SELECT id, name, surname, email, photo, profession FROM user_account WHERE email=? AND password=?";
     final private String GET_COOKIE_KEY_QUERY = "SELECT * FROM user_account WHERE email=? AND cookie_key = ?";
     final private String SET_COOKIE_KEY_QUERY = "UPDATE user_account SET cookie_key=? WHERE email=?";
-
-    private Connection connection;
-    public UsersDao() {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://tinder.cbxr6gpev46o.us-east-2.rds.amazonaws.com:3306/tinder", USERNAME, USERPASS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+    final private String CONNECTION_URL = "jdbc:mysql://tinder.cbxr6gpev46o.us-east-2.rds.amazonaws.com:3306/tinder";
 
     public boolean isUserExist(String mail, String password) {
         boolean isUserExist = false;
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement ps = connection.prepareStatement(GET_USER_QUERY);
             ps.setString(1, mail);
             ps.setString(2, password);
@@ -51,7 +42,7 @@ public class UsersDao {
 
     public boolean isValidCookieKey(String userEmail, String key) {
         boolean isValidCookieKey = false;
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement ps = connection.prepareStatement(GET_COOKIE_KEY_QUERY);
             ps.setString(1, userEmail);
             ps.setString(2, key);
@@ -73,7 +64,7 @@ public class UsersDao {
     }
 
     public void setUserCookieKey(String userEmail, String key) {
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement ps = connection.prepareStatement(SET_COOKIE_KEY_QUERY);
             ps.setString(1, key);
             ps.setString(2, userEmail);
@@ -82,7 +73,6 @@ public class UsersDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 
     public User getCurrentUser() {
@@ -90,7 +80,7 @@ public class UsersDao {
     }
 
     public List<User> getUsers(User currentUser){
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement statement = connection.prepareStatement(QUERY_GET_USERS);
             statement.setInt(1, currentUser.getId());
             ResultSet resultSet = statement.executeQuery();
@@ -104,13 +94,9 @@ public class UsersDao {
                 String profession = resultSet.getString("profession");
                 users.add(new User(id, name, surname, email, photo, profession));
             }
-            connection.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return users;
     }
-
-
 }

@@ -15,18 +15,11 @@ public class GradeDao {
     final private String QUERY_GET_GRADE = "select * from grade\n" +
             "LEFT JOIN user_account as ua on grade.graded_user_account_id = ua.id " +
             "where grade.grade = 'Like' AND grade.user_account_id = ?;";
+    final private String CONNECTION_URL = "jdbc:mysql://tinder.cbxr6gpev46o.us-east-2.rds.amazonaws.com:3306/tinder";
 
-    Connection connection;
-    public GradeDao() {
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://tinder.cbxr6gpev46o.us-east-2.rds.amazonaws.com:3306/tinder", USERNAME, USERPASS);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     public void insertGrade(User currentUser, User gradeUser, String grade ) {
 
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement ps = connection.prepareStatement(QUERY_INSERT);
             ps.setInt(1,
                     Integer.parseInt("" + currentUser.getId() +gradeUser.getId()));
@@ -35,14 +28,13 @@ public class GradeDao {
             ps.setString(4, grade);
             ps.executeUpdate();
             ps.close();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
     }
 
     public List<User> getLikedUser(User currentUser) {
-        try {
+        try (Connection connection = DriverManager.getConnection(CONNECTION_URL, USERNAME, USERPASS)) {
             PreparedStatement ps = connection.prepareStatement(QUERY_GET_GRADE);
             ps.setInt(1, currentUser.getId());
             ResultSet resultSet = ps.executeQuery();
@@ -57,7 +49,6 @@ public class GradeDao {
                 likedUsers.add(new User(id, name, surname, email, photo, profession));
             }
             ps.close();
-            connection.close();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
