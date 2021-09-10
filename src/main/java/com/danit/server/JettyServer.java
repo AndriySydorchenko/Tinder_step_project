@@ -8,6 +8,7 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.util.resource.Resource;
+import org.eclipse.jetty.websocket.javax.server.config.JavaxWebSocketServletContainerInitializer;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -29,6 +30,12 @@ public class JettyServer {
         handler.addFilter(AuthFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(AuthFilter.class, "/users", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(AuthFilter.class, "/liked", EnumSet.of(DispatcherType.REQUEST));
+
+//        JavaxWebSocketServletContainerInitializer.configure(handler, (servletContext, wsContainer) ->
+//        {
+//            wsContainer.setDefaultMaxTextMessageBufferSize(65535);
+//            wsContainer.addEndpoint(WebSocketChat.class);
+//        });
 
         server.setHandler(handler);
 
