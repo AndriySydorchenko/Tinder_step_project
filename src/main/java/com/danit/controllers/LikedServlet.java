@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,7 +31,9 @@ public class LikedServlet extends HttpServlet {
         Template template = configuration.getTemplate("peopleList.ftl");
         try {
             List<User> likedUser = new GradeService().getLikedUsers((User) currentUser);
-            Map<String, Object> values = Map.of("users", likedUser);
+//            Map<String, Object> values = Map.of("users", likedUser);
+            Map<String, Object> values =  new HashMap<String, Object>();
+            values.put("users", likedUser);
             template.process(values, resp.getWriter());
         } catch (TemplateException e) {
             e.printStackTrace();
