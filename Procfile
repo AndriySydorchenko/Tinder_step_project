@@ -1,1 +1,1 @@
-web: java -cp target/classes/;target/dependency/* com.danit.server.Main
+web: java -cp target/classes;target/dependency/* com.danit.server.Main
