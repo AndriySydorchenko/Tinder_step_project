@@ -1,51 +1,54 @@
 package com.danit.controllers;
 
-import com.danit.dao.GradeDao;
-import com.danit.dao.UsersDao;
+
+import com.danit.model.Message;
 import com.danit.model.User;
-import com.danit.service.GradeService;
-import com.danit.service.UserService;
+import com.danit.service.ChatServise;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.Version;
-import lombok.SneakyThrows;
-
-import javax.servlet.ServletException;
-
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 public class ChatServlet extends HttpServlet {
-    private int indexUser = 0;
-    List<User> users = new ArrayList<>(0);
 
-    @SneakyThrows
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         HttpSession session = req.getSession();
-        Object currentUser = session.getAttribute("currentUser");
-        System.out.println(req.getContextPath());
+        User currentUser = (User) session.getAttribute("currentUser");
         Configuration configuration = new Configuration(new Version("2.3.31"));
         configuration.setClassForTemplateLoading(LoginServlet.class, "/");
         configuration.setDefaultEncoding("UTF-8");
         Template template = configuration.getTemplate("chat.ftl");
-//        try {
-//            if( users.size() == 0){
-//                users = new UserService().getUsers((User) currentUser);
-//            }
-//            template.process(users.get(indexUser), resp.getWriter());
-//        } catch (TemplateException e) {
-//            e.printStackTrace();
-//        }
-        template.process(null,resp.getWriter());
+
+        HashMap<String, Object> data = new HashMap<>();
+        int currentChatId = Integer.parseInt(req.getParameter("chatId"));
+        ChatServise chatServise = new ChatServise();
+        List<Message> currentChatMessages = chatServise.getCurrentChatMessages(currentChatId);
+        List<User> chatUsers = chatServise.getChatInterlocutors(currentChatId);
+
+        data.put("messages",currentChatMessages);
+        data.put("user",currentUser);
+        data.put("chatId",currentChatId);
+
+        for (User user : chatUsers){
+            if (user.getId() != currentUser.getId()){
+                data.put("participant",user);
+            }
+        }
+
+        try {
+            template.process(data ,resp.getWriter());
+        } catch (TemplateException e) {
+            e.printStackTrace();
+        }
     }
 
 }
