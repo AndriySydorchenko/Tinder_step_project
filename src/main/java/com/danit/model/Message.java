@@ -6,11 +6,10 @@ public class Message {
     private int senderId;
     private Number timeAdded;
 
-    public Message(int chatId, String text, int senderId, Number timeAdded) {
+    public Message(int chatId, String text, int senderId) {
         this.chatId = chatId;
         this.text = text;
         this.senderId = senderId;
-        this.timeAdded = timeAdded;
     }
 
     public int getChatId() {
@@ -37,21 +36,12 @@ public class Message {
         this.senderId = senderId;
     }
 
-    public Number getTimeAdded() {
-        return timeAdded;
-    }
-
-    public void setTimeAdded(Number timeAdded) {
-        this.timeAdded = timeAdded;
-    }
-
     @Override
     public String toString() {
         return "Message{" +
                 "chatId=" + chatId +
                 ", text='" + text + '\'' +
                 ", senderId=" + senderId +
-                ", timeAdded=" + timeAdded +
                 '}';
     }
 }

@@ -3,6 +3,7 @@ package com.danit.controllers;
 import com.danit.model.MessageDecoder;
 import com.danit.model.MessageEncoder;
 import com.danit.model.Message;
+import com.danit.service.ChatServise;
 
 import static java.lang.String.format;
 
@@ -34,9 +35,8 @@ public class WebSocketChat {
 
     @OnMessage
     public void onMessage(Message message, Session session) throws IOException, EncodeException {
-        System.out.println("text = " + message.getText());
-        System.out.println("sender id = " + message.getSenderId());
-        System.out.println("chat id = " + session.getUserProperties().get("chatId"));
+        ChatServise chatServise = new ChatServise();
+        chatServise.saveMessage(message);
 
         for (Session peer : peers) {
             if (session.getUserProperties().get("chatId") == peer.getUserProperties().get("chatId")) {
