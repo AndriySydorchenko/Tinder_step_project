@@ -25,10 +25,12 @@ public class JettyServer {
         handler.addServlet(WrongLogPassServlet.class, "/wrongLogPass");
         handler.addServlet(UsersServlet.class, "/users");
         handler.addServlet(LikedServlet.class, "/liked");
+        handler.addServlet(ChatServlet.class,"/messages");
 
         handler.addFilter(AuthFilter.class, "/", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(AuthFilter.class, "/users", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(AuthFilter.class, "/liked", EnumSet.of(DispatcherType.REQUEST));
+        handler.addFilter(AuthFilter.class, "/messages", EnumSet.of(DispatcherType.REQUEST));
 
 //        JavaxWebSocketServletContainerInitializer.configure(handler, (servletContext, wsContainer) ->
 //        {

@@ -2,7 +2,9 @@ package com.danit.service;
 
 import com.danit.dao.ChatDao;
 import com.danit.model.Message;
+import com.danit.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatServise {
@@ -16,5 +18,5 @@ public class ChatServise {
         return chatDao.getCurrentChatMessages(currentChatId);
     }
     public void saveMessage(Message message){chatDao.saveMessage(message);}
-
+    public ArrayList<User> getChatInterlocutors(int chatId){ return chatDao.getChatInterlocutors(chatId);}
 }

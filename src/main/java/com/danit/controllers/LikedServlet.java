@@ -46,6 +46,6 @@ public class LikedServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Object currentUser = session.getAttribute("currentUser");
-        resp.sendRedirect("/messages/"+ req.getParameter("id"));
+        resp.sendRedirect("/messages?chatId="+ req.getParameter("id"));
     }
 }
