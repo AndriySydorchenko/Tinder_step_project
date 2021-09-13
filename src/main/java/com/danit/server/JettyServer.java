@@ -32,12 +32,6 @@ public class JettyServer {
         handler.addFilter(AuthFilter.class, "/liked", EnumSet.of(DispatcherType.REQUEST));
         handler.addFilter(AuthFilter.class, "/messages", EnumSet.of(DispatcherType.REQUEST));
 
-//        JavaxWebSocketServletContainerInitializer.configure(handler, (servletContext, wsContainer) ->
-//        {
-//            wsContainer.setDefaultMaxTextMessageBufferSize(65535);
-//            wsContainer.addEndpoint(WebSocketChat.class);
-//        });
-
         server.setHandler(handler);
 
         server.start();
